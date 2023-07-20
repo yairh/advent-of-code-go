@@ -17,8 +17,8 @@ func readFile(path string) (input string) {
 }
 
 
-func codeToMove(code string) Move {
-	codemap := map[string]Move{
+func codeToMove(code string) int {
+	codemap := map[string]int{
 		"A":Rock,
 		"B":Paper,
 		"C":Scissor,
@@ -29,10 +29,9 @@ func codeToMove(code string) Move {
 	return codemap[code]
 }
 
-type Move int 
 
 const (
-	Rock Move = iota + 1  	
+	Rock = iota + 1  	
 	Paper  
 	Scissor 
 )
@@ -44,7 +43,7 @@ const (
 )
 
 
-func winner(move1 Move, move2 Move ) int {
+func winner(move1 , move2 int) int {
 	if move1 == move2 {
 		return Draw
 	}
