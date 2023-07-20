@@ -86,6 +86,5 @@ func main() {
 	sortElfsDecreasing(elfs)
 	fmt.Printf("Max calory elf is %+v and holds %v\n", elfs[0], elfs[0].calories)
 	top_three := elfs[0].calories + elfs[1].calories + elfs[2].calories
-
 	fmt.Printf("Top three %v", top_three)
 }
