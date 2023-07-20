@@ -16,41 +16,38 @@ func readFile(path string) (input string) {
 	return string(content)
 }
 
-
 func codeToMove(code string) int {
 	codemap := map[string]int{
-		"A":Rock,
-		"B":Paper,
-		"C":Scissor,
-		"X":Rock,
-		"Y":Paper,
-		"Z":Scissor,
+		"A": Rock,
+		"B": Paper,
+		"C": Scissor,
+		"X": Rock,
+		"Y": Paper,
+		"Z": Scissor,
 	}
 	return codemap[code]
 }
 
-
 func codeToOutcome(code string) int {
 	codemap := map[string]int{
-		"X":Lose,
-		"Y":Draw,
-		"Z":Win,
+		"X": Lose,
+		"Y": Draw,
+		"Z": Win,
 	}
 	return codemap[code]
 }
 
 const (
-	Rock = iota + 1  	
-	Paper  
-	Scissor 
+	Rock = iota + 1
+	Paper
+	Scissor
 )
 
 const (
 	Lose = 0
 	Draw = 3
-	Win = 6
+	Win  = 6
 )
-
 
 func shouldPlay(move, outcome int) int {
 	if outcome == Draw {
@@ -58,7 +55,7 @@ func shouldPlay(move, outcome int) int {
 	}
 	if move == Rock {
 		if outcome == Win {
-			return Paper 
+			return Paper
 		}
 		return Scissor
 	}
@@ -75,7 +72,7 @@ func shouldPlay(move, outcome int) int {
 	return Paper
 }
 
-func play(move1 , move2 int) int {
+func play(move1, move2 int) int {
 	if move1 == move2 {
 		return Draw
 	}
@@ -84,26 +81,22 @@ func play(move1 , move2 int) int {
 		if move1 == Scissor {
 			return Win
 		}
-			return Lose
+		return Lose
 	}
 	if move2 == Paper {
 		if move1 == Rock {
 			return Win
 		}
-			return Lose
-	}
-	
-	if move2 == Scissor {
-		if move1 == Paper {
-			return Win
-		}
 		return Lose
 	}
-	return 0 // should not happen
+	if move1 == Paper {
+		return Win
+	}
+	return Lose
 }
 
 type Player struct {
-	id int
+	id     int
 	points int
 }
 
@@ -113,12 +106,13 @@ func (p *Player) addPoints(points int) {
 
 func main() {
 	guide := readFile("./day-2/guide.txt")
-	
-	player2 := Player{id:2, points:0}
+
+	player2 := Player{id: 2, points: 0}
 
 	for _, g := range strings.Split(guide, "\n") {
 		if g == "" {
-			continue }
+			continue
+		}
 		moves := strings.Fields(g)
 		// player2move := codeToMove(moves[1])
 		outcome := codeToOutcome(moves[1])
@@ -127,6 +121,6 @@ func main() {
 		player2.addPoints(outcome)
 		player2.addPoints(player2move)
 	}
-		fmt.Printf("Total points: %v\n", player2.points)
-	
+	fmt.Printf("Total points: %v\n", player2.points)
+
 }
