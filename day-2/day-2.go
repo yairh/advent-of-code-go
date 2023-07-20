@@ -30,6 +30,15 @@ func codeToMove(code string) int {
 }
 
 
+func codeToOutcome(code string) int {
+	codemap := map[string]int{
+		"X":Lose,
+		"Y":Draw,
+		"Z":Win,
+	}
+	return codemap[code]
+}
+
 const (
 	Rock = iota + 1  	
 	Paper  
@@ -43,7 +52,30 @@ const (
 )
 
 
-func winner(move1 , move2 int) int {
+func shouldPlay(move, outcome int) int {
+	if outcome == Draw {
+		return move
+	}
+	if move == Rock {
+		if outcome == Win {
+			return Paper 
+		}
+		return Scissor
+	}
+	if move == Paper {
+		if outcome == Win {
+			return Scissor
+		}
+		return Rock
+	}
+	// Scissor
+	if outcome == Win {
+		return Rock
+	}
+	return Paper
+}
+
+func play(move1 , move2 int) int {
 	if move1 == move2 {
 		return Draw
 	}
@@ -82,17 +114,18 @@ func (p *Player) addPoints(points int) {
 func main() {
 	guide := readFile("./day-2/guide.txt")
 	
-	// player1 := Player{id:1, points:0}
 	player2 := Player{id:2, points:0}
 
 	for _, g := range strings.Split(guide, "\n") {
 		if g == "" {
 			continue }
 		moves := strings.Fields(g)
-		player2move := codeToMove(moves[1])
-		result := winner(codeToMove(moves[0]), player2move)
-		player2.addPoints(result)
-		player2.addPoints(int(player2move))
+		// player2move := codeToMove(moves[1])
+		outcome := codeToOutcome(moves[1])
+		player2move := shouldPlay(codeToMove(moves[0]), outcome)
+		// result := play(codeToMove(moves[0]), player2move)
+		player2.addPoints(outcome)
+		player2.addPoints(player2move)
 	}
 		fmt.Printf("Total points: %v\n", player2.points)
 	
