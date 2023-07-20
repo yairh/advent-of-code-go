@@ -18,9 +18,9 @@ func readFile(path string) (input string) {
 	return string(content)
 }
 
-func ParseElfs(content string) (elfs []elf){
+func ParseElfs(content string) (elfs []Elf){
 
-	for idx, l := range strings.Split(content, "\n\n") {
+	for _, l := range strings.Split(content, "\n\n") {
 		str_items :=  strings.Split(l, "\n")
 		items := make([]int, 0, len(str_items)) 
 		for _, i := range strings.Split(l, "\n"){
@@ -33,7 +33,7 @@ func ParseElfs(content string) (elfs []elf){
 			}
 			items = append(items, cal)
 		}
-		e := elf{name:string(rune(idx)), items:items}
+		e := NewElf(items)
 		elfs = append(elfs, e)
 	}
 	return elfs
@@ -49,26 +49,29 @@ func sumIntArray(arr []int) (s int) {
 
 }
 
-type elf struct {
+type Elf struct {
 	name  string
 	items []int
+	calories int
 }
 
-func (e elf) Calories() (c int) {
-	return sumIntArray(e.items)
+func NewElf(items []int) Elf {
+	calories := sumIntArray(items)
+	return Elf{items:items, calories:calories}
+	
 }
 
-func sortElfsDecreasing(elfs []elf) {
-	sort.Slice(elfs[:], func(i, j int ) bool {return elfs[i].Calories() > elfs[j].Calories() })
+func sortElfsDecreasing(elfs []Elf) {
+	sort.Slice(elfs[:], func(i, j int ) bool {return elfs[i].calories > elfs[j].calories })
  
 }
 
-func find_max_calory_elf(elfs []elf) (e elf) {
+func find_max_calory_elf(elfs []Elf) (e Elf) {
 
 	max_elf := elfs[0]
 
 	for _, e := range elfs {
-		if e.Calories() > max_elf.Calories() {
+		if e.calories > max_elf.calories {
 			max_elf = e
 		}
 
@@ -81,8 +84,8 @@ func main() {
 	input := readFile("./day-1/day-1-input.txt")
 	elfs := ParseElfs(input)
 	sortElfsDecreasing(elfs)
-	fmt.Printf("Max calory elf is %+v and holds %v\n", elfs[0], elfs[0].Calories())
-	top_three := elfs[0].Calories() + elfs[1].Calories() + elfs[2].Calories()
+	fmt.Printf("Max calory elf is %+v and holds %v\n", elfs[0], elfs[0].calories)
+	top_three := elfs[0].calories + elfs[1].calories + elfs[2].calories
 
 	fmt.Printf("Top three %v", top_three)
 }
