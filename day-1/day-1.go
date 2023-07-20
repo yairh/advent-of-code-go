@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"sort"
 	"strconv"
 	"strings"
 )
@@ -57,6 +58,11 @@ func (e elf) Calories() (c int) {
 	return sumIntArray(e.items)
 }
 
+func sortElfsDecreasing(elfs []elf) {
+	sort.Slice(elfs[:], func(i, j int ) bool {return elfs[i].Calories() > elfs[j].Calories() })
+ 
+}
+
 func find_max_calory_elf(elfs []elf) (e elf) {
 
 	max_elf := elfs[0]
@@ -74,6 +80,9 @@ func find_max_calory_elf(elfs []elf) (e elf) {
 func main() {
 	input := readFile("./day-1/day-1-input.txt")
 	elfs := ParseElfs(input)
-	max_elf := find_max_calory_elf(elfs)
-	fmt.Printf("Max calory elf is %+v and holds %v", max_elf, max_elf.Calories())
+	sortElfsDecreasing(elfs)
+	fmt.Printf("Max calory elf is %+v and holds %v\n", elfs[0], elfs[0].Calories())
+	top_three := elfs[0].Calories() + elfs[1].Calories() + elfs[2].Calories()
+
+	fmt.Printf("Top three %v", top_three)
 }
