@@ -72,7 +72,7 @@ func find_max_calory_elf(elfs []elf) (e elf) {
 }
 
 func main() {
-	input := readFile("./day-1-input.txt")
+	input := readFile("./day-1/day-1-input.txt")
 	elfs := ParseElfs(input)
 	max_elf := find_max_calory_elf(elfs)
 	fmt.Printf("Max calory elf is %+v and holds %v", max_elf, max_elf.Calories())
