@@ -67,7 +67,7 @@ func main() {
 		if range1.within(range2) || range2.within(range1) {
 			contained += 1
 		}
-		if range1.overlaps(range2) || range2.overlaps(range1) {
+		if range1.overlaps(range2) {
 			overlaped += 1
 		}
 	}
