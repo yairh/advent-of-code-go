@@ -17,7 +17,19 @@ func readFile(path string) (input string) {
 	return string(content)
 }
 
-func extract_range(r string) (int, int) {
+type Range struct {
+	min int
+	max int
+}
+
+func (r *Range) within(r2 Range) bool {
+	if (r.min >= r2.min) && (r.max <= r2.max) {
+		return true
+	}
+	return false
+}
+
+func extract_range(r string) Range {
 	nums := strings.Split(r, "-")
 	left, err := strconv.Atoi(strings.TrimSpace(nums[0]))
 	if err != nil {
@@ -28,15 +40,7 @@ func extract_range(r string) (int, int) {
 		log.Fatal(err)
 	}
 
-	return left, right
-
-}
-
-func is_range_within_range(min1, max1, min2, max2 int) bool {
-	if (min1 >= min2) && (max1 <= max2) {
-		return true
-	}
-	return false
+	return Range{min: left, max: right}
 }
 
 func main() {
@@ -47,9 +51,9 @@ func main() {
 			continue
 		}
 		assignements := strings.Split(pairs, ",")
-		left, right := extract_range(assignements[0])
-		left2, right2 := extract_range(assignements[1])
-		if is_range_within_range(left, right, left2, right2) || is_range_within_range(left2, right2, left, right) {
+		range1 := extract_range(assignements[0])
+		range2 := extract_range(assignements[1])
+		if range1.within(range2) || range2.within(range1) {
 			sum += 1
 		}
 	}
